@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+// Verifica si el usuario ha iniciado sesión
+if (!isset($_SESSION['user_id'])) {
+    // Redirige a la página de inicio de sesión si no está autenticado
+    header('Location: login.php'); // Cambia 'login.php' al nombre de tu página de inicio de sesión
+    exit(); // Asegúrate de detener la ejecución del script después de redirigir
+}
 require 'config/conexion.php';
 
 

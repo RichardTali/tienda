@@ -13,11 +13,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $user = mysqli_fetch_assoc($result);
 
         if (password_verify($password, $user['password'])) {
+            // Guardar información en la sesión
             $_SESSION['id'] = $user['id'];
             $_SESSION['nombre'] = $user['nombre'];
             $_SESSION['rol'] = $user['rol'];
 
-            header("Location:index.php");
+            // Redirigir dependiendo del rol
+            if ($user['rol'] === 'admin') {
+                header("Location: productos.php");
+            } else {
+                header("Location: index.php");
+            }
             exit();
         } else {
             echo "Contraseña incorrecta";

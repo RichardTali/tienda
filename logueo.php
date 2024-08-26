@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
             // Redirigir dependiendo del rol
             if ($user['rol'] === 'admin') {
-                header("Location: productos.php");
+                header("Location: prin.php");
             } else {
                 header("Location: index.php");
             }

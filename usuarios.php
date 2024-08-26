@@ -1,4 +1,14 @@
 <?php
+
+session_start();
+
+// Verificar si el usuario está logueado
+if (!isset($_SESSION['id'])) {
+    // Si no está logueado, redirigir al login
+    header("Location: login.php");
+    exit();
+}
+
 require 'config/conexion.php';
 
 $sql = "select id, nombre, email, password, direccion, telefono,fecha_registro,rol from usuarios";

@@ -1,12 +1,14 @@
 <?php
+
 session_start();
 
-// Verifica si el usuario ha iniciado sesión
-if (!isset($_SESSION['user_id'])) {
-    // Redirige a la página de inicio de sesión si no está autenticado
-    header('Location: login.php'); // Cambia 'login.php' al nombre de tu página de inicio de sesión
-    exit(); // Asegúrate de detener la ejecución del script después de redirigir
+// Verificar si el usuario está logueado
+if (!isset($_SESSION['id'])) {
+    // Si no está logueado, redirigir al login
+    header("Location: login.php");
+    exit();
 }
+
 require 'config/conexion.php';
 
 
@@ -27,8 +29,10 @@ $result = $conexion->query($sql);
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Productos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">    
 
     <!-- Para utilizar Google Fonts para los iconos -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

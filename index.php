@@ -5,6 +5,9 @@ session_start();
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
+
+// Verificar si el usuario está logueado
+$loggedIn = isset($_SESSION['id']);
 ?>
 
 <!doctype html>
@@ -23,7 +26,7 @@ header("Pragma: no-cache");
             right: 95px;
             display: flex;
             align-items: center;
-            gap: 15px; /* Espacio entre los elementos */
+            gap: 15px;
         }
 
         .cart-icon {
@@ -33,7 +36,7 @@ header("Pragma: no-cache");
 
         .welcome-message {
             font-size: 16px;
-            margin-right: 10px; /* Espacio entre el mensaje y el botón de cerrar sesión */
+            margin-right: 10px;
         }
 
         .alert {
@@ -42,46 +45,35 @@ header("Pragma: no-cache");
 
         .card {
             width: 300px;
-            /* Ajusta el ancho de la tarjeta */
             height: 400px;
-            /* Ajusta la altura de la tarjeta */
             margin: 10px;
             display: inline-block;
             vertical-align: top;
-            /* Alinea verticalmente las tarjetas en la misma línea */
             border: none;
             margin-bottom: 50px;
         }
 
         .card-img-top {
             width: 150px;
-            /* Ancho de la imagen */
             height: 150px;
-            /* Altura de la imagen */
             object-fit: cover;
-            /* Ajusta la imagen para que cubra el área sin distorsión */
             display: block;
             margin-left: auto;
             margin-right: auto;
             margin-top: 10px;
-            /* Margen superior para espaciar la imagen del borde superior de la tarjeta */
         }
 
         .card-body {
             padding: 15px;
-            /* Espacio dentro de la tarjeta */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            /* Distribuye el espacio entre el contenido y el botón */
             height: calc(100% - 200px);
-            /* Ajusta la altura del cuerpo de la tarjeta para que ocupe el espacio restante */
         }
 
         .container_footer {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            /* Cuatro columnas de igual ancho */
             margin-bottom: 20px;
         }
 
@@ -90,10 +82,8 @@ header("Pragma: no-cache");
             font-size: 1.5em;
         }
 
-        /* Asegúrate de que el fondo del modal no oscurezca la página principal excesivamente */
         .modal-backdrop.show {
             opacity: 0.5;
-            /* Ajusta la opacidad según sea necesario */
         }
     </style>
 </head>
@@ -101,7 +91,7 @@ header("Pragma: no-cache");
 <body>
     <div class="container mt-4">
         <div class="icons-container">
-            <?php if (isset($_SESSION['nombre'])): ?>
+            <?php if ($loggedIn): ?>
                 <span class="welcome-message">Bienvenido,
                     <strong><?php echo htmlspecialchars($_SESSION['nombre']); ?></strong>!</span>
                 <a href="logout.php" class="btn btn-danger btn-sm ms-2">Cerrar Sesión</a>
@@ -262,22 +252,20 @@ header("Pragma: no-cache");
             cartModal.show();
         }
 
-        // Función para eliminar un producto del carrito
         function removeFromCart(index) {
             let cart = JSON.parse(localStorage.getItem('cart'));
             cart.splice(index, 1);
             localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
             showCart();
+            updateCartCount();
         }
 
-        // Función para finalizar la compra
         function finalizarCompra() {
-            alert("Compra finalizada con éxito!");
-            localStorage.removeItem('cart');
-            updateCartCount();
-            let cartModal = bootstrap.Modal.getInstance(document.getElementById('cartModal'));
-            cartModal.hide();
+            <?php if ($loggedIn): ?>
+                window.location.href = "compra.php";
+            <?php else: ?>
+                alert('Debe loguearse para realizar la compra.');
+            <?php endif; ?>
         }
     </script>
 
